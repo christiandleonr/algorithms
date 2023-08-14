@@ -1,4 +1,4 @@
-package BinaryTrees;
+package Shared;
 
 public class Node {
     private Node left;

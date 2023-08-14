@@ -1,5 +1,7 @@
 package BinaryTrees;
 
+import Shared.Node;
+
 import java.io.IOException;
 
 public class MaxPathSum {
