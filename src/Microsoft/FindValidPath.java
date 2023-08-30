@@ -1,10 +1,9 @@
 package Microsoft;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class FindValidPath {
-    private static final List<Character> locks = Arrays.asList('<','>','v','^', 'x');
+    private static final List<Character> locks = Arrays.asList('<','>','v','^','x');
     
     private static boolean findValidPath(List<String> stringsGrid) {
         List<List<Character>> grid = adjustGrid(stringsGrid);
@@ -17,12 +16,60 @@ public class FindValidPath {
         printGrid(grid);
 
         Set<String> visited = new HashSet<>();
-        return depthFirstExplore(grid, startRow, startCol, visited);
+        return breadthFirstExplore(grid, startRow, startCol, visited);
+    }
+
+    private static boolean breadthFirstExplore(List<List<Character>> grid, int startRow, int startCol, Set<String> visited) {
+        Queue<String> queue = new LinkedList<>();
+
+        String coordinates = startRow + "," + startCol;
+        queue.add(coordinates);
+
+        while (!queue.isEmpty()) {
+            String currentCoordinate = queue.poll();
+            int row = Integer.parseInt(currentCoordinate.split(",")[0]);
+            int col = Integer.parseInt(currentCoordinate.split(",")[1]);
+
+            boolean rowInbound = row >= 0 && row < grid.size();
+            boolean colInbound = col >= 0 && col < grid.get(0).size();
+            if (!rowInbound || !colInbound) {
+                continue;
+            }
+
+            char currentStepValue = grid.get(row).get(col);
+
+            if (visited.contains(currentCoordinate)) {
+                continue;
+            }
+            visited.add(currentCoordinate);
+
+            if (locks.contains(currentStepValue)) {
+                continue;
+            }
+
+            if (currentStepValue == 'D') {
+                return true;
+            }
+
+            String left = (row - 1) + "," + col;
+            queue.add(left);
+
+            String up = row + "," + (col - 1);
+            queue.add(up);
+
+            String right = (row + 1) + "," + col;
+            queue.add(right);
+
+            String down = row + "," + (col + 1);
+            queue.add(down);
+        }
+
+        return false;
     }
     
     private static boolean depthFirstExplore(List<List<Character>> grid, int r, int c, Set<String> visited) {
-        boolean rowInbound = r >=0 && r < grid.size();
-        boolean colInbound = c >=0 && c < grid.get(0).size();
+        boolean rowInbound = r >= 0 && r < grid.size();
+        boolean colInbound = c >= 0 && c < grid.get(0).size();
         
         if (!rowInbound || !colInbound) {
             return false;
@@ -149,10 +196,10 @@ public class FindValidPath {
      */
     public static void main(String[] args) {
         List<String> grid = Arrays.asList(
-                ".....<.",
-                "..x.D.v",
+                ".....<D",
+                "..x...v",
                 "S.x....",
-                "......."
+                ".....^."
         );
 
         System.out.println(findValidPath(grid));
