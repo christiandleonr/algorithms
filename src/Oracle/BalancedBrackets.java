@@ -12,26 +12,31 @@ import java.util.Stack;
 public class BalancedBrackets {
     // ([]{}()) -> valid
     // ([)] -> invalid
-    private static boolean isValid(String input) {
-        char[] characters = input.toCharArray();
-
+    public static boolean isBalanced(String s) {
         Stack<Character> stack = new Stack<>();
-        for (char character: characters) {
-            if (character == '[' || character == '{' || character == '(') {
-                stack.push(character);
-            } else if (character == ']' && stack.pop() != '[') {
-                return false;
-            } else if (character == '}' && stack.pop() != '{') {
-                return false;
-            } else if (character == ')' && stack.pop() != '(') {
-                return false;
+
+        for (char bracket : s.toCharArray()) {
+            if (bracket == '(' || bracket == '[' || bracket == '{') {
+                stack.add(bracket);
+            } else {
+                if (stack.isEmpty())
+                    return false;
+
+                char lastBracket = stack.pop();
+                if (bracket == ')' && lastBracket != '(') {
+                    return false;
+                } else if (bracket == ']' && lastBracket != '[') {
+                    return false;
+                } else if (bracket == '}' && lastBracket != '{') {
+                    return false;
+                }
             }
         }
 
-        return true;
+        return stack.isEmpty();
     }
 
     public static void main(String[] args) {
-        System.out.println(isValid("[]{}()"));
+        System.out.println(isBalanced("[]{}()"));
     }
 }
