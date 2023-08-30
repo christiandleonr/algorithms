@@ -94,8 +94,4 @@ public class SymmetricTree {
 
         System.out.println(isSymmetric(root));
     }
-
-    // Patrones arquitectonicos
-    // Estilos de comunicacion
-    // Ventajas y desventajas
 }
