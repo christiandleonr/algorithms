@@ -1,4 +1,4 @@
-package Pinterest;
+package Companies.Pinterest;
 import java.util.Arrays;
 import java.util.List;
 
